@@ -21,6 +21,9 @@ public class Task {
      * @param time  час виконання задачі
      */
     public Task(String title, int time) {
+        if (time < 0) {
+            throw new IllegalArgumentException("Час не може бути менше за 0");
+        }
         this.title = title;
         this.time = time;
     }
@@ -35,6 +38,9 @@ public class Task {
      * @param interval інтервал повторення задачі
      */
     public Task(String title, int start, int end, int interval) {
+        if (start < 0 || end < 0 || interval < 0) {
+            throw new IllegalArgumentException("Час не може бути менше за 0");
+        }
         this.title = title;
         setTime(start, end, interval);
     }
@@ -70,6 +76,9 @@ public class Task {
      * @param time - час виконання задачі
      */
     public void setTime(int time) {
+        if (time < 0) {
+            throw new IllegalArgumentException("Час не може бути менше за 0");
+        }
         if (isRepeated()) {
             setTime(0, 0, 0);
         }
@@ -105,6 +114,9 @@ public class Task {
     }
 
     public void setTime(int start, int end, int interval) {
+        if (start < 0 || end < 0 || interval < 0) {
+            throw new IllegalArgumentException("Час не може бути менше за 0");
+        }
         this.start = start;
         this.end = end;
         this.interval = interval;
@@ -124,6 +136,9 @@ public class Task {
      * якщо current час менше за getStartTime, повертає getStartTime
      */
     public int nextTimeAfter(int current) {
+        if (current < 0) {
+            throw new IllegalArgumentException("Час не може бути менше за 0");
+        }
         if (current >= this.getEndTime() || !this.isActive()) {
             return -1;
         } else if (current < this.getStartTime()) {
