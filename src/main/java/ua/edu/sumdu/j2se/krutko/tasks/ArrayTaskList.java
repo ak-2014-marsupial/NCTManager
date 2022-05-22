@@ -21,13 +21,11 @@ public class ArrayTaskList {
      * @param task задача, якщо має значення Null - не додається до списку
      */
     public void add(Task task) {
-        if (task != null) {
-            if (size == capacity) {
-                grow();
-            }
-            listOfTask[size] = task;
-            size++;
+        if (size == capacity) {
+            grow();
         }
+        listOfTask[size] = task;
+        size++;
     }
 
     private void grow() {
@@ -76,8 +74,8 @@ public class ArrayTaskList {
      * @return повертає задачу за індексом
      */
     public Task getTask(int index) {
-        if (index > this.size) {
-            return null;
+        if (index > this.size || index < 0) {
+            throw new IndexOutOfBoundsException("Index= " + index + " Size =" + size);
         }
         return this.listOfTask[index];
     }
@@ -89,9 +87,13 @@ public class ArrayTaskList {
      * @param from час початку інтервалу
      * @param to   час кінця інтервалу
      * @return повертає підмножину задач, що заплановані на виконання
-     *          хоча б раз після часу from і не пізніше to
+     * хоча б раз після часу from і не пізніше to
      */
     public ArrayTaskList incoming(int from, int to) {
+        if (to < 0) {
+            throw new IllegalArgumentException("Час закінчення повинен бути більше 0");
+        }
+
         ArrayTaskList incomingArrayTaskList = new ArrayTaskList();
         for (int i = 0; i < this.size; i++) {
             if (this.listOfTask[i].nextTimeAfter(from) != -1
