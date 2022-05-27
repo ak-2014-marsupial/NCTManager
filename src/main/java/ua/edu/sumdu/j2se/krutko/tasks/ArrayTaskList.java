@@ -1,17 +1,15 @@
 package ua.edu.sumdu.j2se.krutko.tasks;
 
 
-public class ArrayTaskList {
+public class ArrayTaskList  extends AbstractTaskList {
     private int size;
-    private int capacity;
+    private int capacity = 10;
     private Task[] listOfTask;
 
     /**
      * Конструктор створює список задач із розміром capacity.
      */
     public ArrayTaskList() {
-        capacity = 10;
-        size = 0;
         listOfTask = new Task[capacity];
     }
 
@@ -79,31 +77,6 @@ public class ArrayTaskList {
         }
         return this.listOfTask[index];
     }
-
-    /**
-     * Метод повертає підмножину задач, що заплановані на виконання.
-     * хоча б раз після часу from і не пізніше to
-     *
-     * @param from час початку інтервалу
-     * @param to   час кінця інтервалу
-     * @return повертає підмножину задач, що заплановані на виконання
-     * хоча б раз після часу from і не пізніше to
-     */
-    public ArrayTaskList incoming(int from, int to) {
-        if (to < 0) {
-            throw new IllegalArgumentException("Час закінчення повинен бути більше 0");
-        }
-
-        ArrayTaskList incomingArrayTaskList = new ArrayTaskList();
-        for (int i = 0; i < this.size; i++) {
-            if (this.listOfTask[i].nextTimeAfter(from) != -1
-                    && this.listOfTask[i].nextTimeAfter(from) < to) {
-                incomingArrayTaskList.add(this.listOfTask[i]);
-            }
-        }
-        return incomingArrayTaskList;
-    }
-
 }
 
 

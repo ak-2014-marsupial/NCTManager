@@ -1,7 +1,7 @@
 package ua.edu.sumdu.j2se.krutko.tasks;
 
 
-public class LinkedTaskList {
+public class LinkedTaskList extends AbstractTaskList {
     private Node<Task> head;
     private Node<Task> tail;
     private int size;
@@ -65,7 +65,7 @@ public class LinkedTaskList {
         return false;
     }
 
-    private Task unlink(Node <Task> tmp) {
+    private Task unlink(Node<Task> tmp) {
         Task element = tmp.element;
         Node next = tmp.next;
         Node prev = tmp.prev;
@@ -84,23 +84,8 @@ public class LinkedTaskList {
         }
         tmp.element = null;
         --this.size;
-        return (Task) element;
+        return element;
 
-    }
-
-    public LinkedTaskList incoming(int from, int to) {
-        if (from < 0 || to < 0) {
-            throw new IllegalArgumentException("Час не може бути менше за 0");
-        }
-
-        LinkedTaskList incomingList = new LinkedTaskList();
-        for (int i = 0; i < size; i++) {
-            if (getTask(i).nextTimeAfter(from) != -1
-                    && getTask(i).nextTimeAfter(from) <= to) {
-                incomingList.add(getTask(i));
-            }
-        }
-        return incomingList;
     }
 
     public int size() {
@@ -126,6 +111,5 @@ public class LinkedTaskList {
             return node.element;
         }
     }
-
 }
 
