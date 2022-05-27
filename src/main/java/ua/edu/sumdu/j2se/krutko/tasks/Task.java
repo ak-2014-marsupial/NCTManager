@@ -6,7 +6,7 @@ package ua.edu.sumdu.j2se.krutko.tasks;
  * - яка не буде повторюватися. Вона буде призначатися лише на одну дату.
  * - яка буде повторюватися від початку до кінцевої точки з деяким інтервалом.
  */
-public class Task {
+public class Task implements Cloneable {
     private String title;
     private int time;
     private int start;
@@ -154,5 +154,59 @@ public class Task {
             }
             return tmp < this.getEndTime() ? tmp : -1;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Task task = (Task) o;
+        return time == task.time
+                && start == task.start
+                && end == task.end
+                && interval == task.interval
+                && active == task.active
+                && title.equals(task.title);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = title.hashCode();
+        result = 31 * result + time;
+        result = 31 * result + start;
+        result = 31 * result + end;
+        result = 31 * result + interval;
+        result = 31 * result + (active ? 1 : 0);
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "title='" + title + '\'' +
+                (time == 0 ? "" : ", time=" + time) +
+                (start == 0 ? "" : ", start=" + start) +
+                (end == 0 ? "" : ", end=" + end) +
+                (interval == 0 ? "" : ", interval=" + interval) +
+                ", active=" + active +
+                '}';
+    }
+
+    @Override
+    public Task clone() throws CloneNotSupportedException {
+        Task taskClone = (Task) super.clone();
+        taskClone.active = active;
+        taskClone.title = title;
+        taskClone.interval = interval;
+        taskClone.end = end;
+        taskClone.start = start;
+        taskClone.time = time;
+        return taskClone;
     }
 }
