@@ -1,6 +1,8 @@
 package ua.edu.sumdu.j2se.krutko.tasks;
 
 
+import java.util.Iterator;
+
 public class LinkedTaskList extends AbstractTaskList {
     private Node<Task> head;
     private Node<Task> tail;
@@ -109,6 +111,48 @@ public class LinkedTaskList extends AbstractTaskList {
                 node = node.prev;
             }
             return node.element;
+        }
+    }
+
+    @Override
+    public LinkedTaskList clone() throws CloneNotSupportedException {
+        LinkedTaskList taskListClone = (LinkedTaskList) super.clone();
+        taskListClone.head = taskListClone.tail = null;
+        taskListClone.size = 0;
+        for (Node<Task> tmp = this.head; tmp != null; tmp = tmp.next) {
+            taskListClone.add(tmp.element);
+        }
+        return taskListClone;
+    }
+
+    @Override
+    public Iterator<Task> iterator() {
+        return new ListIterator<Task>();
+    }
+
+    private class ListIterator<T> implements Iterator<Task> {
+        private int currentIndex = 0;
+        private int lastElemReturned = -1;
+
+        @Override
+        public boolean hasNext() {
+            return currentIndex < size();
+        }
+
+        @Override
+        public Task next() {
+            lastElemReturned = currentIndex;
+            return getTask(currentIndex++);
+        }
+
+        @Override
+        public void remove() {
+            if (currentIndex > 0) {
+                LinkedTaskList.this.remove(getTask(lastElemReturned));
+                currentIndex--;
+            } else {
+                throw new IllegalStateException();
+            }
         }
     }
 }

@@ -1,6 +1,8 @@
 package ua.edu.sumdu.j2se.krutko.tasks;
 
 
+import java.util.Iterator;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -23,16 +25,21 @@ public class Main {
         int to = (26 + 8 * 30) * 24 + 8;
 
         System.out.println("List of Task from ArrayTaskList");
+        System.out.println(arrayTaskList);
+        System.out.println("===========");
+
         for (int i = 0; i < arrayTaskList.size(); i++) {
             Task task = arrayTaskList.getTask(i);
-            System.out.printf("     %s  %s \n" , task.getTitle() , task.getStartTime());
+            System.out.println(task);
         }
+        System.out.println();
         System.out.printf("LinkedList incoming from %s  to %s :\n", from, to);
         AbstractTaskList list2 = arrayTaskList.incoming(from, to);
         for (int i = 0; i < list2.size(); i++) {
-            System.out.printf("   %s \n",list2.getTask(i).getTitle());
+            System.out.println(list2.getTask(i));
         }
-        System.out.println("--------------");
+
+        System.out.println("-------------------------------------");
 
 
         System.out.println("List of Task from LinkedTaskList");
@@ -44,14 +51,55 @@ public class Main {
 
         for (int i = 0; i < linkedTaskList.size(); i++) {
             Task task = linkedTaskList.getTask(i);
-            System.out.printf("     %s  %s \n" , task.getTitle() , task.getStartTime());
+            System.out.println(task);
         }
 
+        System.out.println();
         System.out.printf("LinkedList incoming from %s  to %s : \n", from, to);
         AbstractTaskList list1 = linkedTaskList.incoming(from, to);
         for (int i = 0; i < list1.size(); i++) {
-            System.out.printf("   %s \n",list1.getTask(i).getTitle());
+            System.out.println(list1.getTask(i));
         }
+        System.out.println();
+        System.out.println();
+        Task taskA = new Task("A", 10, 10, 0);
+        Task taskB = new Task("A", 10, 10, 0);
+        taskA.setTime(10);
+        taskA.setActive(false);
+        taskB.setTime(10);
+        taskB.setActive(false);
+        System.out.printf("A.equals(B) - %s \n",taskA.equals(taskB));
+        System.out.printf("B.equals(A) - %s \n",taskB.equals(taskA));
+        System.out.printf("HashCode A = %s \n",taskA.hashCode());
+        System.out.printf("HashCode B = %s \n",taskB.hashCode());
+
+        LinkedTaskList lTaskListA = new LinkedTaskList();
+        lTaskListA.add(taskA);
+        lTaskListA.add(taskA);
+        lTaskListA.add(taskA);
+        lTaskListA.add(taskA);
+        lTaskListA.add(taskA);
+
+        LinkedTaskList lTaskListB = new LinkedTaskList();
+        lTaskListB.add(taskA);
+        lTaskListB.add(taskA);
+        lTaskListB.add(taskA);
+        lTaskListB.add(taskA);
+        lTaskListB.add(taskA);
+
+        System.out.println(lTaskListA.equals(lTaskListB));
+
+        for(Task task: arrayTaskList){
+
+            System.out.printf("Task = %s \n",task);
+        }
+        Iterator<Task> iter ;
+        for(iter =  arrayTaskList.iterator(); iter.hasNext(); ){
+            System.out.println(iter.next());
+            iter.remove();
+        }
+        System.out.printf("arrayTaskList.size = %s \n",arrayTaskList.size());
+        System.out.println(linkedTaskList);
 
 
     }

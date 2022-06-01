@@ -1,7 +1,10 @@
 package ua.edu.sumdu.j2se.krutko.tasks;
 
 
-public class ArrayTaskList  extends AbstractTaskList {
+import java.util.Arrays;
+import java.util.Iterator;
+
+public class ArrayTaskList extends AbstractTaskList {
     private int size;
     private int capacity = 10;
     private Task[] listOfTask;
@@ -12,6 +15,7 @@ public class ArrayTaskList  extends AbstractTaskList {
     public ArrayTaskList() {
         listOfTask = new Task[capacity];
     }
+
 
     /**
      * Метод додає задачу до списку, та динамічно розширює масив.
@@ -76,6 +80,50 @@ public class ArrayTaskList  extends AbstractTaskList {
             throw new IndexOutOfBoundsException("Index= " + index + " Size =" + size);
         }
         return this.listOfTask[index];
+    }
+
+    @Override
+    public ArrayTaskList clone() throws CloneNotSupportedException {
+        ArrayTaskList arrayTaskListClone = (ArrayTaskList) super.clone();
+        arrayTaskListClone.listOfTask = Arrays.copyOf(this.listOfTask, this.size());
+        for (int i = 0; i < this.size(); i++) {
+            arrayTaskListClone.listOfTask[i] = this.getTask(i).clone();
+        }
+        return arrayTaskListClone;
+    }
+
+    @Override
+    public Iterator<Task> iterator() {
+        return new IteratorList();
+    }
+
+    private class IteratorList implements Iterator<Task> {
+        private int currentIndex = 0;
+        private int lastElementReturned = -1;
+
+        @Override
+        public boolean hasNext() {
+            return currentIndex != size;
+        }
+
+        @Override
+        public Task next() {
+            lastElementReturned = currentIndex;
+            return listOfTask[currentIndex++];
+        }
+
+        /**
+         * Видаляє з базової колекції останній елемент, повернутий цим ітератором.
+         */
+        @Override
+        public void remove() {
+            if (currentIndex > 0) {
+                ArrayTaskList.this.remove(listOfTask[lastElementReturned]);
+                currentIndex--;
+            } else {
+                throw new IllegalStateException();
+            }
+        }
     }
 }
 
