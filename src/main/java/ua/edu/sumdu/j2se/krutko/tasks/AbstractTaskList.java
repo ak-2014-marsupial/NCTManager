@@ -1,9 +1,6 @@
 package ua.edu.sumdu.j2se.krutko.tasks;
 
 
-import static ua.edu.sumdu.j2se.krutko.tasks.ListTypes.types.ARRAY;
-import static ua.edu.sumdu.j2se.krutko.tasks.ListTypes.types.LINKED;
-
 public abstract class AbstractTaskList extends TaskListFactory implements Cloneable, Iterable<Task> {
 
     private int size;
@@ -32,7 +29,8 @@ public abstract class AbstractTaskList extends TaskListFactory implements Clonea
         if (to < 0) {
             throw new IllegalArgumentException("Час закінчення повинен бути більше 0");
         }
-        AbstractTaskList incomingTaskList = TaskListFactory.createTaskList(this instanceof ArrayTaskList ? ARRAY : LINKED);
+        ListTypes.types typeTaskList = TaskListFactory.getTypeTaskList(this);
+        AbstractTaskList incomingTaskList = TaskListFactory.createTaskList(typeTaskList);
         for (int i = 0; i < this.size(); i++) {
             if (this.getTask(i).nextTimeAfter(from) != -1
                     && this.getTask(i).nextTimeAfter(from) < to) {
@@ -45,10 +43,16 @@ public abstract class AbstractTaskList extends TaskListFactory implements Clonea
     @Override
     public boolean equals(Object o) {
         boolean result = true;
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         AbstractTaskList that = (AbstractTaskList) o;
-        if (this.size() != that.size()) return false;
+        if (this.size() != that.size()) {
+            return false;
+        }
         for (int i = 0; i < that.size(); i++) {
             result = this.getTask(i).equals(that.getTask(i));
             if (!result) {
