@@ -1,6 +1,10 @@
 package ua.edu.sumdu.j2se.krutko.tasks;
 
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public abstract class AbstractTaskList extends TaskListFactory implements Cloneable, Iterable<Task> {
 
     private int size;
@@ -14,6 +18,7 @@ public abstract class AbstractTaskList extends TaskListFactory implements Clonea
     }
 
     public abstract Task getTask(int index);
+    public abstract Stream<Task> getStream();
 
     /**
      * Метод повертає підмножину задач, що заплановані на виконання.
@@ -25,18 +30,17 @@ public abstract class AbstractTaskList extends TaskListFactory implements Clonea
      * хоча б раз після часу from і не пізніше to
      */
 
-    public AbstractTaskList incoming(int from, int to) {
+    public final AbstractTaskList incoming(int from, int to) {
         if (to < 0) {
             throw new IllegalArgumentException("Час закінчення повинен бути більше 0");
         }
         ListTypes.types typeTaskList = TaskListFactory.getTypeTaskList(this);
         AbstractTaskList incomingTaskList = TaskListFactory.createTaskList(typeTaskList);
-        for (int i = 0; i < this.size(); i++) {
-            if (this.getTask(i).nextTimeAfter(from) != -1
-                    && this.getTask(i).nextTimeAfter(from) < to) {
-                incomingTaskList.add(this.getTask(i));
-            }
-        }
+        List<Task> collect = this.getStream().collect(Collectors.toList());
+        this.getStream()
+                .filter(task -> task.nextTimeAfter(from) != -1
+                        && task.nextTimeAfter(from) < to)
+                .forEach(incomingTaskList::add);
         return incomingTaskList;
     }
 

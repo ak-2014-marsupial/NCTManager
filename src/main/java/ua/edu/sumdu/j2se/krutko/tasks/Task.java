@@ -103,12 +103,15 @@ public class Task implements Cloneable {
     public int getEndTime() {
         if (isRepeated()) {
             return this.end;
-        } else return this.time;
+        } else {
+            return this.time;
+        }
     }
 
     public int getRepeatInterval() {
-        if (isRepeated()) return this.interval;
-        else {
+        if (isRepeated()) {
+            return this.interval;
+        } else {
             return 0;
         }
     }
@@ -188,14 +191,13 @@ public class Task implements Cloneable {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "title='" + title + '\'' +
-                (time == 0 ? "" : ", time=" + time) +
-                (start == 0 ? "" : ", start=" + start) +
-                (end == 0 ? "" : ", end=" + end) +
-                (interval == 0 ? "" : ", interval=" + interval) +
-                ", active=" + active +
-                '}';
+        return "Task{"
+                + "title='" + title + '\''
+                + (time == 0 ? "" : ", time=" + time)
+                + (start == 0 ? "" : ", start=" + start)
+                + (end == 0 ? "" : ", end=" + end)
+                + (interval == 0 ? "" : ", interval=" + interval)
+                + ", active=" + active + '}';
     }
 
     @Override
