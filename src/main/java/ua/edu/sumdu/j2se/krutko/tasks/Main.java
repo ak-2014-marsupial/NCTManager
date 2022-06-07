@@ -28,12 +28,14 @@ public class Main {
         System.out.println(arrayTaskList);
         System.out.println("===========");
 
+        System.out.printf("arrayTaskList.size() = %d \n",arrayTaskList.size());
         for (int i = 0; i < arrayTaskList.size(); i++) {
             Task task = arrayTaskList.getTask(i);
             System.out.println(task);
         }
         System.out.println();
-        System.out.printf("LinkedList incoming from %s  to %s :\n", from, to);
+        System.out.printf("arrayTaskList.size = %d incoming from %s  to %s :\n",arrayTaskList.size(), from, to);
+
         AbstractTaskList list2 = arrayTaskList.incoming(from, to);
         for (int i = 0; i < list2.size(); i++) {
             System.out.println(list2.getTask(i));

@@ -3,6 +3,7 @@ package ua.edu.sumdu.j2se.krutko.tasks;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 public class ArrayTaskList extends AbstractTaskList {
     private int size;
@@ -80,6 +81,16 @@ public class ArrayTaskList extends AbstractTaskList {
             throw new IndexOutOfBoundsException("Index= " + index + " Size =" + size);
         }
         return this.listOfTask[index];
+    }
+
+    @Override
+    public Stream<Task> getStream() {
+        Task[] listOfTask = new Task[size];
+        for (int i = 0; i < listOfTask.length; i++) {
+            listOfTask[i] = this.getTask(i);
+        }
+
+        return Arrays.stream(listOfTask);
     }
 
     @Override

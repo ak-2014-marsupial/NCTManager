@@ -1,7 +1,9 @@
 package ua.edu.sumdu.j2se.krutko.tasks;
 
 
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 public class LinkedTaskList extends AbstractTaskList {
     private Node<Task> head;
@@ -131,9 +133,9 @@ public class LinkedTaskList extends AbstractTaskList {
     }
 
     private class ListIterator<T> implements Iterator<Task> {
+
         private int currentIndex = 0;
         private int lastElemReturned = -1;
-
         @Override
         public boolean hasNext() {
             return currentIndex < size();
@@ -154,6 +156,15 @@ public class LinkedTaskList extends AbstractTaskList {
                 throw new IllegalStateException();
             }
         }
+
+    }
+    @Override
+    public Stream<Task> getStream() {
+        Task[] listOfTask = new Task[size];
+        for (int i = 0; i < this.size(); i++) {
+            listOfTask[i] = this.getTask(i);
+        }
+        return Arrays.stream(listOfTask);
     }
 }
 
