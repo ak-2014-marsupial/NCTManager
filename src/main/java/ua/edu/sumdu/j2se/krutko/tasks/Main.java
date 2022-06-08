@@ -1,109 +1,59 @@
 package ua.edu.sumdu.j2se.krutko.tasks;
 
 
-import java.util.Iterator;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public class Main {
 
-    public static void main(String[] args) {
-
-        Task task1 = new Task("Обід із гарною дівчиною", (24 + 8 * 30) * 24 + 16);
-        Task task2 = new Task("Ранкова пробіжка", 3 * 30 * 24, 9 * 30 * 24, 24);
-        Task task3 = new Task("Приймання ліків", (20 + 8 * 30) * 24, (28 + 8 * 30) * 24, 12);
-        Task task4 = new Task("Зустріч з друзями", (9 * 30) * 24 + 18);
+    public static void main(String[] args) throws CloneNotSupportedException {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime end = now.plusDays(1);
+        Task task1 = new Task("Обід із гарною дівчиною", LocalDateTime.of(2022, 8, 24, 16, 0, 0));
+        Task task2 = new Task("Ранкова пробіжка", LocalDateTime.of(2022, 3, 1, 8, 15), LocalDateTime.of(2022, 9, 1, 8, 15), 86400);
+        Task task3 = new Task("Приймання ліків", LocalDateTime.of(2022, 8, 20, 8, 15), LocalDateTime.of(2022, 8, 28, 8, 15), 43200);
+        Task task4 = new Task("Зустріч з друзями", LocalDateTime.of(2022, 9, 1, 18, 0));
+        Task task5 = new Task("Some ", now, end, 3600);
         task1.setActive(true);
         task2.setActive(true);
         task3.setActive(true);
         task4.setActive(true);
+        task5.setActive(true);
+
+        LocalDateTime current = now.plusDays(1).minusSeconds(1);
+        System.out.printf("current= %s  end= %s \n", current, task5.getEndTime());
+
 
         ArrayTaskList arrayTaskList = new ArrayTaskList();
         arrayTaskList.add(task1);
         arrayTaskList.add(task2);
         arrayTaskList.add(task3);
         arrayTaskList.add(task4);
-        int from = (25 + 8 * 30) * 24 + 8;
-        int to = (26 + 8 * 30) * 24 + 8;
+        LocalDateTime from = LocalDateTime.of(2022, 8, 25, 8, 0);
+        LocalDateTime to = LocalDateTime.of(2022, 8, 26, 8, 0);
 
         System.out.println("List of Task from ArrayTaskList");
         System.out.println(arrayTaskList);
         System.out.println("===========");
 
-        System.out.printf("arrayTaskList.size() = %d \n",arrayTaskList.size());
-        for (int i = 0; i < arrayTaskList.size(); i++) {
-            Task task = arrayTaskList.getTask(i);
+        Iterable<Task> incoming = Tasks.incoming(arrayTaskList, from, to);
+        for (Task task : incoming) {
             System.out.println(task);
         }
         System.out.println();
-        System.out.printf("arrayTaskList.size = %d incoming from %s  to %s :\n",arrayTaskList.size(), from, to);
+        System.out.printf("календар задач from %s to %s: \n", from, to);
 
-        AbstractTaskList list2 = arrayTaskList.incoming(from, to);
-        for (int i = 0; i < list2.size(); i++) {
-            System.out.println(list2.getTask(i));
-        }
-
-        System.out.println("-------------------------------------");
-
-
-        System.out.println("List of Task from LinkedTaskList");
-        LinkedTaskList linkedTaskList = new LinkedTaskList();
-        linkedTaskList.add(task1);
-        linkedTaskList.add(task2);
-        linkedTaskList.add(task3);
-        linkedTaskList.add(task4);
-
-        for (int i = 0; i < linkedTaskList.size(); i++) {
-            Task task = linkedTaskList.getTask(i);
-            System.out.println(task);
-        }
-
-        System.out.println();
-        System.out.printf("LinkedList incoming from %s  to %s : \n", from, to);
-        AbstractTaskList list1 = linkedTaskList.incoming(from, to);
-        for (int i = 0; i < list1.size(); i++) {
-            System.out.println(list1.getTask(i));
+        SortedMap<LocalDateTime, Set<Task>> calendar = Tasks.calendar(arrayTaskList, from, to);
+        for (Map.Entry<LocalDateTime, Set<Task>> entry : calendar.entrySet()) {
+            System.out.println(entry.getKey() + "  " + entry.getValue());
         }
         System.out.println();
+        System.out.println("Перевірка на зміну time");
+        Task task = new Task("some task", LocalDateTime.now());
+        LocalDateTime time = task.getTime();
+        System.out.printf("    time = %s  task = %s\n", time,task);
+        System.out.printf("time+10h = %s  task = %s\n", time.plusHours(10),task);
         System.out.println();
-        Task taskA = new Task("A", 10, 10, 0);
-        Task taskB = new Task("A", 10, 10, 0);
-        taskA.setTime(10);
-        taskA.setActive(false);
-        taskB.setTime(10);
-        taskB.setActive(false);
-        System.out.printf("A.equals(B) - %s \n",taskA.equals(taskB));
-        System.out.printf("B.equals(A) - %s \n",taskB.equals(taskA));
-        System.out.printf("HashCode A = %s \n",taskA.hashCode());
-        System.out.printf("HashCode B = %s \n",taskB.hashCode());
-
-        LinkedTaskList lTaskListA = new LinkedTaskList();
-        lTaskListA.add(taskA);
-        lTaskListA.add(taskA);
-        lTaskListA.add(taskA);
-        lTaskListA.add(taskA);
-        lTaskListA.add(taskA);
-
-        LinkedTaskList lTaskListB = new LinkedTaskList();
-        lTaskListB.add(taskA);
-        lTaskListB.add(taskA);
-        lTaskListB.add(taskA);
-        lTaskListB.add(taskA);
-        lTaskListB.add(taskA);
-
-        System.out.println(lTaskListA.equals(lTaskListB));
-
-        for(Task task: arrayTaskList){
-
-            System.out.printf("Task = %s \n",task);
-        }
-        Iterator<Task> iter ;
-        for(iter =  arrayTaskList.iterator(); iter.hasNext(); ){
-            System.out.println(iter.next());
-            iter.remove();
-        }
-        System.out.printf("arrayTaskList.size = %s \n",arrayTaskList.size());
-        System.out.println(linkedTaskList);
-
 
     }
-
 }
