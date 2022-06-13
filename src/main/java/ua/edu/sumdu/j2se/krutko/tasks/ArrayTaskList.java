@@ -34,9 +34,7 @@ public class ArrayTaskList extends AbstractTaskList {
     private void grow() {
         capacity = (int) (capacity * 1.5);
         Task[] newListOfTask = new Task[capacity];
-        for (int i = 0; i < listOfTask.length; i++) {
-            newListOfTask[i] = listOfTask[i];
-        }
+        System.arraycopy(listOfTask, 0, newListOfTask, 0, listOfTask.length);
         listOfTask = newListOfTask;
     }
 
@@ -114,7 +112,7 @@ public class ArrayTaskList extends AbstractTaskList {
 
         @Override
         public boolean hasNext() {
-            return currentIndex != size;
+            return currentIndex != size && listOfTask[currentIndex] != null;
         }
 
         @Override
