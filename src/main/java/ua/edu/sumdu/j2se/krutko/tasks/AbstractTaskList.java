@@ -1,19 +1,17 @@
 package ua.edu.sumdu.j2se.krutko.tasks;
 
 
+import java.io.Serializable;
 import java.util.stream.Stream;
 
-public abstract class AbstractTaskList extends TaskListFactory implements Cloneable, Iterable<Task> {
+public abstract class AbstractTaskList extends TaskListFactory implements Cloneable, Iterable<Task>, Serializable {
 
-    private int size;
 
     public abstract void add(Task task);
 
     public abstract boolean remove(Task task);
 
-    public int size() {
-        return size;
-    }
+    public abstract int size();
 
     public abstract Task getTask(int index);
     public abstract Stream<Task> getStream();

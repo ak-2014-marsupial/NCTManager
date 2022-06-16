@@ -1,5 +1,6 @@
 package ua.edu.sumdu.j2se.krutko.tasks;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -9,7 +10,7 @@ import java.util.Objects;
  * - яка не буде повторюватися. Вона буде призначатися лише на одну дату.
  * - яка буде повторюватися від початку до кінцевої точки з деяким інтервалом.
  */
-public class Task implements Cloneable {
+public class Task implements Cloneable, Serializable {
     private String title;
     private LocalDateTime time;
     private LocalDateTime start;
