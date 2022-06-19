@@ -1,6 +1,7 @@
 package ua.edu.sumdu.j2se.krutko.tasks;
 
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -49,11 +50,24 @@ public class Main {
         }
         System.out.println();
         System.out.println("Перевірка на зміну time");
-        Task task = new Task("some task", LocalDateTime.now());
-        LocalDateTime time = task.getTime();
-        System.out.printf("    time = %s  task = %s\n", time,task);
-        System.out.printf("time+10h = %s  task = %s\n", time.plusHours(10),task);
+        LocalDateTime timeNow = LocalDateTime.now();
+
+        Task task = new Task("some task", timeNow);
+        System.out.printf("    time = %s  task = %s\n", timeNow,task);
+        timeNow = timeNow.plusHours(10);
+        System.out.printf("time+10h = %s  task = %s\n", timeNow,task);
         System.out.println();
+        System.out.println("-----serialization:");
+        System.out.println("arrayTaskList.size="+arrayTaskList.size());
+        TaskIO.writeBinary(arrayTaskList, new File("outPut.txt"));
+        ArrayTaskList tasksSer = new ArrayTaskList();
+        TaskIO.readBinary(tasksSer , new File("outPut.txt"));
+        System.out.println(tasksSer);
+        System.out.println("-------json--------");
+        AbstractTaskList arrayTaskList2 = new ArrayTaskList();
+        TaskIO.writeText(arrayTaskList,new File("out_json.json"));
+        TaskIO.readText(arrayTaskList2,new File("out_json.json"));
+        System.out.println(arrayTaskList2);
 
     }
 }
