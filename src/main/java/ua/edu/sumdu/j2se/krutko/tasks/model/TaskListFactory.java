@@ -1,4 +1,4 @@
-package ua.edu.sumdu.j2se.krutko.tasks;
+package ua.edu.sumdu.j2se.krutko.tasks.model;
 
 
 public class TaskListFactory {
